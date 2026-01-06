@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initContent();
   initGallery();
   initLightbox();
-  initWaline();
+  initCommentWall();
   initScrollEffects();
 });
 
@@ -242,25 +242,84 @@ function initLightbox() {
   }
 }
 
-// 初始化 Waline 评论
-function initWaline() {
+// 初始化留言墙
+function initCommentWall() {
   const { waline } = CONFIG;
+  const track = document.getElementById('commentTrack');
+  const input = document.getElementById('commentInput');
+  const submit = document.getElementById('commentSubmit');
   
-  if (typeof Waline !== 'undefined' && waline.serverURL) {
-    Waline.init({
-      el: '#waline',
-      serverURL: waline.serverURL,
-      placeholder: waline.placeholder,
-      avatar: waline.avatar,
-      pageSize: waline.pageSize,
-      lang: waline.lang,
-      dark: true,
-      meta: ['nick'],
-      requiredMeta: ['nick'],
-      login: 'disable',
-      copyright: false
-    });
+  if (!track || !waline.serverURL) return;
+  
+  // 加载评论
+  async function loadComments() {
+    try {
+      const res = await fetch(`${waline.serverURL}/api/comment?path=/&pageSize=50`);
+      const data = await res.json();
+      
+      if (data.data && data.data.length > 0) {
+        const comments = data.data.map(c => `
+          <div class="comment-item">
+            ${c.comment.replace(/<[^>]*>/g, '').substring(0, 50)}
+            <span class="comment-time">${formatTime(c.insertedAt)}</span>
+          </div>
+        `).join('');
+        // 复制一份实现无缝滚动
+        track.innerHTML = comments + comments;
+      } else {
+        track.innerHTML = '<div class="comment-item">还没有留言，来说点什么吧~</div>';
+      }
+    } catch (e) {
+      track.innerHTML = '<div class="comment-item">还没有留言，来说点什么吧~</div>';
+    }
   }
+  
+  // 格式化时间
+  function formatTime(dateStr) {
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diff = now - date;
+    if (diff < 60000) return '刚刚';
+    if (diff < 3600000) return Math.floor(diff / 60000) + '分钟前';
+    if (diff < 86400000) return Math.floor(diff / 3600000) + '小时前';
+    return Math.floor(diff / 86400000) + '天前';
+  }
+  
+  // 发送评论
+  async function postComment() {
+    const content = input.value.trim();
+    if (!content) return;
+    
+    submit.disabled = true;
+    submit.textContent = '发送中...';
+    
+    try {
+      await fetch(`${waline.serverURL}/api/comment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          comment: content,
+          nick: '旅人',
+          url: '/',
+          ua: navigator.userAgent
+        })
+      });
+      input.value = '';
+      loadComments();
+    } catch (e) {
+      alert('发送失败，请重试');
+    }
+    
+    submit.disabled = false;
+    submit.textContent = '发送';
+  }
+  
+  submit?.addEventListener('click', postComment);
+  input?.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') postComment();
+  });
+  
+  loadComments();
 }
 
 // 滚动效果

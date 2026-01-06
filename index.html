@@ -13,8 +13,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
   
-  <!-- Waline CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+
   
   <!-- Custom CSS -->
   <link rel="stylesheet" href="styles.css">
@@ -213,8 +212,16 @@
         <h2 class="section-title">留言板</h2>
         <div class="section-line"></div>
       </div>
-      <div class="comments-wrapper">
-        <div id="waline"></div>
+      
+      <!-- 滚动留言墙 -->
+      <div class="comment-wall">
+        <div class="comment-track" id="commentTrack"></div>
+      </div>
+      
+      <!-- 简洁输入框 -->
+      <div class="comment-input-wrapper">
+        <input type="text" id="commentInput" class="comment-input" placeholder="留下你的足迹..." maxlength="100">
+        <button id="commentSubmit" class="btn btn-primary">发送</button>
       </div>
     </div>
   </section>
@@ -237,7 +244,7 @@
 
   <!-- Scripts -->
   <script src="config.js"></script>
-  <script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+
   <script src="main.js"></script>
 </body>
 </html>

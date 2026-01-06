@@ -671,18 +671,88 @@ body {
   border: 1px solid var(--color-border);
 }
 
-/* Waline Custom Styles */
-#waline {
-  --waline-theme-color: var(--color-accent);
-  --waline-active-color: var(--color-accent-light);
-  --waline-color: var(--color-text);
-  --waline-bgcolor: transparent;
-  --waline-bgcolor-light: var(--color-bg-light);
-  --waline-border-color: var(--color-border);
-  --waline-disable-bgcolor: var(--color-bg-dark);
-  --waline-disable-color: var(--color-text-muted);
-  --waline-code-bgcolor: var(--color-bg-dark);
-  --waline-font-size: 0.95rem;
+/* Comments - Scrolling Wall */
+.comment-wall {
+  position: relative;
+  overflow: hidden;
+  height: 120px;
+  margin-bottom: var(--space-md);
+  border-radius: 8px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+}
+
+.comment-track {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-sm);
+  animation: commentScroll 30s linear infinite;
+  width: max-content;
+}
+
+.comment-wall:hover .comment-track {
+  animation-play-state: paused;
+}
+
+.comment-item {
+  flex-shrink: 0;
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(232, 168, 76, 0.1);
+  border: 1px solid rgba(232, 168, 76, 0.2);
+  border-radius: 20px;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.comment-item .comment-time {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-left: var(--space-xs);
+}
+
+@keyframes commentScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.comment-input-wrapper {
+  display: flex;
+  gap: var(--space-sm);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.comment-input {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 25px;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.comment-input:focus {
+  border-color: var(--color-accent);
+}
+
+.comment-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+#commentSubmit {
+  border-radius: 25px;
+  padding: var(--space-sm) var(--space-md);
 }
 
 /* Footer */
