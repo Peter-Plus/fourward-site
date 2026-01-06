@@ -74,7 +74,7 @@ const CONFIG = {
 
   // 留言板配置（Waline）
   waline: {
-    serverURL: "http://waline.worldlinesite.com",
+    serverURL: "https://waline.worldlinesite.com",
     placeholder: "留下你的足迹...",
     avatar: "retro",
     pageSize: 10,
@@ -104,6 +104,6 @@ const CONFIG = {
     { key: "W/S", action: "攀爬" },
     { key: "Q", action: "召唤/隐藏反人格" },
     { key: "R", action: "回拉至反人格位置" },
-    { key: "E", action: "道具" }
+    { key: "E", action: "交互" }
   ]
 };
