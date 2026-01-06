@@ -14,7 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
   
   <!-- Waline CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css">
+  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
   
   <!-- Custom CSS -->
   <link rel="stylesheet" href="styles.css">
@@ -125,9 +125,11 @@
         <h2 class="section-title">画廊</h2>
         <div class="section-line"></div>
       </div>
-      <div class="gallery-carousel">
+      <div class="gallery-wrapper">
         <button class="gallery-btn gallery-prev">‹</button>
-        <div class="gallery-track" id="galleryTrack"></div>
+        <div class="gallery-carousel">
+          <div class="gallery-track" id="galleryTrack"></div>
+        </div>
         <button class="gallery-btn gallery-next">›</button>
       </div>
     </div>
@@ -235,7 +237,7 @@
 
   <!-- Scripts -->
   <script src="config.js"></script>
-  <script src="https://unpkg.com/@waline/client@v3/dist/waline.js"></script>
+  <script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

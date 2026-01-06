@@ -74,7 +74,8 @@ body {
   z-index: 0;
   background: 
     radial-gradient(ellipse at 20% 0%, rgba(232, 168, 76, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(45, 61, 61, 0.5) 0%, transparent 50%);
+    radial-gradient(ellipse at 80% 100%, rgba(45, 61, 61, 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(232, 168, 76, 0.03) 0%, transparent 70%);
 }
 
 /* Container */
@@ -133,23 +134,8 @@ body {
   position: relative;
 }
 
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: var(--color-accent);
-  transition: width var(--transition);
-}
-
 .nav-links a:hover {
   color: var(--color-text);
-}
-
-.nav-links a:hover::after {
-  width: 100%;
 }
 
 /* Hero Section */
@@ -435,38 +421,33 @@ body {
 }
 
 /* Gallery - Carousel */
+.gallery-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
 .gallery-carousel {
-  position: relative;
+  flex: 1;
   overflow: hidden;
-  margin: 0 calc(-1 * var(--space-md));
-  padding: var(--space-sm) 0;
+  border-radius: 6px;
 }
 
 .gallery-track {
   display: flex;
   gap: var(--space-sm);
-  animation: scroll 30s linear infinite;
-  width: max-content;
-  padding: 0 40px;
-}
-
-.gallery-carousel:hover .gallery-track {
-  animation-play-state: paused;
 }
 
 .gallery-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
   background: rgba(45, 61, 61, 0.9);
   border: 1px solid var(--color-border);
   border-radius: 50%;
   color: var(--color-text);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   cursor: pointer;
-  z-index: 10;
   transition: all var(--transition);
   display: flex;
   align-items: center;
@@ -479,15 +460,8 @@ body {
   border-color: var(--color-accent);
 }
 
-.gallery-prev {
-  left: 10px;
-}
-
-.gallery-next {
-  right: 10px;
-}
-
 .gallery-item {
+  position: relative;
   flex-shrink: 0;
   width: 320px;
   aspect-ratio: 16/9;
@@ -512,15 +486,6 @@ body {
 
 .gallery-item:hover img {
   transform: scale(1.1);
-}
-
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
 }
 
 /* Video Section */
@@ -833,6 +798,154 @@ body {
     opacity: 0.5;
     transform: scaleY(0.8);
   }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* 滚动渐入动画 */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 特色卡片悬浮光效 */
+.feature-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(232, 168, 76, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.feature-card:hover::before {
+  left: 100%;
+}
+
+/* 按钮悬浮效果增强 */
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-primary:hover::after {
+  opacity: 1;
+}
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+/* 下载图标浮动 */
+.download-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 引用块装饰 */
+.story-quote {
+  position: relative;
+}
+
+.story-quote::before {
+  content: '"';
+  position: absolute;
+  top: -20px;
+  left: -10px;
+  font-size: 4rem;
+  color: var(--color-accent);
+  opacity: 0.2;
+  font-family: Georgia, serif;
+}
+
+/* 团队卡片悬浮 */
+.team-member {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* 画廊图片悬浮效果增强 */
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.gallery-item:hover::after {
+  opacity: 1;
+}
+
+/* 导航链接动画 */
+.nav-links a {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-links a::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--color-accent);
+  transform: translateX(-101%);
+  transition: transform 0.3s ease;
+}
+
+.nav-links a:hover::before {
+  transform: translateX(0);
+}
+
+/* 分隔装饰 */
+.section-header::before {
+  content: '—';
+  display: block;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+  letter-spacing: 0.5em;
 }
 
 /* Responsive */

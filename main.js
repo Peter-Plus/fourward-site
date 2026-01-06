@@ -100,30 +100,79 @@ function initContent() {
 // 初始化图库轮播
 function initGallery() {
   const galleryTrack = document.getElementById('galleryTrack');
+  const carousel = document.querySelector('.gallery-carousel');
   const { screenshots } = CONFIG.media;
   
   if (galleryTrack && screenshots) {
-    // 复制两份实现无缝滚动
-    const items = [...screenshots, ...screenshots].map((src, i) => `
-      <div class="gallery-item" data-index="${i % screenshots.length}">
-        <img src="${src}" alt="游戏截图 ${(i % screenshots.length) + 1}" loading="lazy" 
+    // 生成图片（不复制）
+    const items = screenshots.map((src, i) => `
+      <div class="gallery-item" data-index="${i}">
+        <img src="${src}" alt="游戏截图 ${i + 1}" loading="lazy" 
              onerror="this.parentElement.style.display='none'">
       </div>
     `).join('');
     
     galleryTrack.innerHTML = items;
     
-    // 左右按钮控制
+    const itemWidth = 320 + 12; // 图片宽度 + gap
+    let currentOffset = 0;
+    let direction = 1; // 1向右，-1向左
+    let isPaused = false;
+    let maxOffset = 0;
+    
+    // 计算最大偏移
+    setTimeout(() => {
+      maxOffset = Math.max(0, galleryTrack.scrollWidth - carousel.offsetWidth);
+    }, 100);
+    
+    // 自动滚动（来回）
+    function autoScroll() {
+      if (!isPaused && maxOffset > 0) {
+        currentOffset += 0.5 * direction;
+        
+        // 到达边界，反向
+        if (currentOffset >= maxOffset) {
+          currentOffset = maxOffset;
+          direction = -1;
+        } else if (currentOffset <= 0) {
+          currentOffset = 0;
+          direction = 1;
+        }
+        
+        galleryTrack.style.transform = `translateX(-${currentOffset}px)`;
+      }
+      requestAnimationFrame(autoScroll);
+    }
+    autoScroll();
+    
+    // 悬浮暂停
+    carousel?.addEventListener('mouseenter', () => { isPaused = true; });
+    carousel?.addEventListener('mouseleave', () => { isPaused = false; });
+    
+    // 左右按钮
     const prevBtn = document.querySelector('.gallery-prev');
     const nextBtn = document.querySelector('.gallery-next');
-    const itemWidth = 320 + 12; // 图片宽度 + gap
     
     prevBtn?.addEventListener('click', () => {
-      galleryTrack.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+      isPaused = true;
+      currentOffset = Math.max(0, currentOffset - itemWidth);
+      galleryTrack.style.transition = 'transform 0.4s ease';
+      galleryTrack.style.transform = `translateX(-${currentOffset}px)`;
+      setTimeout(() => {
+        galleryTrack.style.transition = 'none';
+        isPaused = false;
+      }, 450);
     });
     
     nextBtn?.addEventListener('click', () => {
-      galleryTrack.scrollBy({ left: itemWidth, behavior: 'smooth' });
+      isPaused = true;
+      currentOffset = Math.min(maxOffset, currentOffset + itemWidth);
+      galleryTrack.style.transition = 'transform 0.4s ease';
+      galleryTrack.style.transform = `translateX(-${currentOffset}px)`;
+      setTimeout(() => {
+        galleryTrack.style.transition = 'none';
+        isPaused = false;
+      }, 450);
     });
   }
 }
@@ -229,24 +278,25 @@ function initScrollEffects() {
   
   // 元素进入视口动画
   const observerOptions = {
-    threshold: 0.1,
+    threshold: 0.15,
     rootMargin: '0px 0px -50px 0px'
   };
   
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry, index) => {
       if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
+        // 延迟添加，产生错落效果
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, index * 100);
       }
     });
   }, observerOptions);
   
-  document.querySelectorAll('.section').forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(30px)';
-    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(section);
+  // 为各个区块添加动画类
+  document.querySelectorAll('.section, .feature-card, .info-card, .team-member').forEach(el => {
+    el.classList.add('fade-in-section');
+    observer.observe(el);
   });
 }
 

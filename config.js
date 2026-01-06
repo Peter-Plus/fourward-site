@@ -13,7 +13,7 @@ const CONFIG = {
     platform: "Windows PC",
     engine: "Unity 2022 LTS",
     jamName: "thatgamejam #01",
-    jamBy: "thatgamecompany",
+    jamBy: "TGC",
     devPeriod: "2025.12.20 - 2026.01.05"
   },
 
@@ -83,15 +83,15 @@ const CONFIG = {
   features: [
     {
       title: "双人格系统",
-      desc: "主人格与反人格镜像移动，利用配合解决谜题"
+      desc: "控制主人格，影子镜像跟随——两个自我，一场博弈"
     },
     {
       title: "主题契合",
-      desc: "左手是乔，右手是他的影子——他的怀疑、悔恨与恐惧"
+      desc: "左手是乔，右手是他的影子——怀疑、悔恨与恐惧的具象"
     },
     {
       title: "攀登之旅",
-      desc: "从2100m营地到6100m绝壁，5个关卡的登顶挑战"
+      desc: "从2100m到6100m，五个关卡，一段与自己和解的旅程"
     }
   ],
 
