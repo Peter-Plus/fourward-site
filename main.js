@@ -254,28 +254,38 @@ function initCommentWall() {
   // 加载评论
   async function loadComments() {
     try {
-      const res = await fetch(`${waline.serverURL}/api/comment?path=/&pageSize=50`);
+      const res = await fetch(`${waline.serverURL}/comment?path=/&pageSize=50`);
       const data = await res.json();
+      console.log('API response:', data); // 调试用
       
-      if (data.data && data.data.length > 0) {
-        const comments = data.data.map(c => `
-          <div class="comment-item">
-            ${c.comment.replace(/<[^>]*>/g, '').substring(0, 50)}
-            <span class="comment-time">${formatTime(c.insertedAt)}</span>
-          </div>
-        `).join('');
+      // 兼容不同格式
+      const comments = data.data || data;
+      
+      if (comments && comments.length > 0) {
+        const html = comments.map(c => {
+          const text = (c.comment || c.content || '').replace(/<[^>]*>/g, '').substring(0, 50);
+          const time = c.insertedAt || c.createdAt || c.time;
+          return `
+            <div class="comment-item">
+              ${text}
+              <span class="comment-time">${formatTime(time)}</span>
+            </div>
+          `;
+        }).join('');
         // 复制一份实现无缝滚动
-        track.innerHTML = comments + comments;
+        track.innerHTML = html + html;
       } else {
         track.innerHTML = '<div class="comment-item">还没有留言，来说点什么吧~</div>';
       }
     } catch (e) {
+      console.error('Load comments error:', e);
       track.innerHTML = '<div class="comment-item">还没有留言，来说点什么吧~</div>';
     }
   }
   
   // 格式化时间
   function formatTime(dateStr) {
+    if (!dateStr) return '';
     const date = new Date(dateStr);
     const now = new Date();
     const diff = now - date;
@@ -294,7 +304,7 @@ function initCommentWall() {
     submit.textContent = '发送中...';
     
     try {
-      await fetch(`${waline.serverURL}/api/comment`, {
+      await fetch(`${waline.serverURL}/comment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -305,7 +315,7 @@ function initCommentWall() {
         })
       });
       input.value = '';
-      loadComments();
+      setTimeout(loadComments, 500);
     } catch (e) {
       alert('发送失败，请重试');
     }
