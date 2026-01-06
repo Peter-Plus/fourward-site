@@ -72,7 +72,7 @@ const CONFIG = {
 
   // 留言板配置（Waline）
   waline: {
-    serverURL: "https://fourward-waline.vercel.app",
+    serverURL: "http://waline.worldlinesite.com",
     placeholder: "留下你的足迹...",
     avatar: "retro",
     pageSize: 10,
