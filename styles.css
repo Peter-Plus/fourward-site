@@ -101,7 +101,7 @@ body {
 .nav-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--space-md);
+  padding: 0 var(--space-lg);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -123,7 +123,7 @@ body {
 
 .nav-links {
   display: flex;
-  gap: var(--space-md);
+  gap: var(--space-lg);
 }
 
 .nav-links a {
@@ -628,6 +628,13 @@ body {
   justify-content: center;
   font-size: 2rem;
   color: var(--color-bg-dark);
+  overflow: hidden;
+}
+
+.member-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .member-name {
@@ -642,23 +649,58 @@ body {
   margin-bottom: var(--space-sm);
 }
 
-.member-email {
+.member-contact {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--space-xs);
+  justify-content: center;
   color: var(--color-text-dim);
-  text-decoration: none;
-  font-size: 0.85rem;
+  cursor: pointer;
+  padding: var(--space-xs);
   transition: color var(--transition);
 }
 
-.member-email:hover {
+.member-contact:hover {
   color: var(--color-accent);
 }
 
-.member-email svg {
-  width: 16px;
-  height: 16px;
+.member-contact svg {
+  width: 18px;
+  height: 18px;
+}
+
+.contact-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg-dark);
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: var(--color-text);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.contact-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--color-accent);
+}
+
+.member-contact:hover .contact-tooltip {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Comments Section */
@@ -671,55 +713,36 @@ body {
   border: 1px solid var(--color-border);
 }
 
-/* Comments - Scrolling Wall */
+/* Comments - Danmaku Wall */
 .comment-wall {
   position: relative;
   overflow: hidden;
-  height: 120px;
-  margin-bottom: var(--space-md);
+  height: 400px;
+  max-width: 800px;
+  margin: 0 auto var(--space-md);
   border-radius: 8px;
   background: var(--color-card);
   border: 1px solid var(--color-border);
 }
 
-.comment-track {
-  display: flex;
-  gap: var(--space-md);
-  padding: var(--space-sm);
-  animation: commentScroll 30s linear infinite;
-  width: max-content;
-}
-
-.comment-wall:hover .comment-track {
-  animation-play-state: paused;
-}
-
 .comment-item {
-  flex-shrink: 0;
-  padding: var(--space-sm) var(--space-md);
-  background: rgba(232, 168, 76, 0.1);
-  border: 1px solid rgba(232, 168, 76, 0.2);
+  position: absolute;
+  padding: var(--space-xs) var(--space-md);
+  background: rgba(232, 168, 76, 0.15);
+  border: 1px solid rgba(232, 168, 76, 0.3);
   border-radius: 20px;
   color: var(--color-text);
-  font-size: 0.9rem;
   white-space: nowrap;
-  max-width: 300px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  animation: danmaku linear forwards;
+  will-change: transform;
 }
 
-.comment-item .comment-time {
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-  margin-left: var(--space-xs);
-}
-
-@keyframes commentScroll {
-  0% {
+@keyframes danmaku {
+  from {
     transform: translateX(0);
   }
-  100% {
-    transform: translateX(-50%);
+  to {
+    transform: translateX(calc(-100% - 100vw));
   }
 }
 

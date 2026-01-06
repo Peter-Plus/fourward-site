@@ -78,22 +78,45 @@ function initContent() {
   
   const teamGrid = document.getElementById('teamGrid');
   if (teamGrid && team.members) {
-    teamGrid.innerHTML = team.members.map(m => `
-      <div class="team-member">
-        <div class="member-avatar">${m.name.charAt(0)}</div>
-        <div class="member-name">${m.name}</div>
-        <div class="member-role">${m.role}</div>
-        ${m.email ? `
-          <a href="mailto:${m.email}" class="member-email">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
-            </svg>
-            <span>联系</span>
-          </a>
-        ` : ''}
-      </div>
-    `).join('');
+    teamGrid.innerHTML = team.members.map(m => {
+      // 判断是否是图片路径
+      const isImage = m.avatar && (m.avatar.includes('/') || m.avatar.includes('.'));
+      const avatarContent = isImage 
+        ? `<img src="${m.avatar}" alt="${m.name}" onerror="this.parentElement.innerHTML='${m.name.charAt(0)}'">`
+        : (m.avatar || m.name.charAt(0));
+      
+      return `
+        <div class="team-member">
+          <div class="member-avatar">${avatarContent}</div>
+          <div class="member-name">${m.name}</div>
+          <div class="member-role">${m.role}</div>
+          ${m.email ? `
+            <div class="member-contact" data-email="${m.email}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <span class="contact-tooltip">${m.email}</span>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+    
+    // 点击复制邮箱
+    teamGrid.querySelectorAll('.member-contact').forEach(el => {
+      el.addEventListener('click', () => {
+        const email = el.dataset.email;
+        navigator.clipboard.writeText(email).then(() => {
+          const tooltip = el.querySelector('.contact-tooltip');
+          const original = tooltip.textContent;
+          tooltip.textContent = '已复制!';
+          setTimeout(() => {
+            tooltip.textContent = original;
+          }, 1500);
+        });
+      });
+    });
   }
 }
 
@@ -242,57 +265,97 @@ function initLightbox() {
   }
 }
 
-// 初始化留言墙
+// 初始化弹幕留言墙
 function initCommentWall() {
   const { waline } = CONFIG;
-  const track = document.getElementById('commentTrack');
+  const wall = document.getElementById('commentWall');
   const input = document.getElementById('commentInput');
   const submit = document.getElementById('commentSubmit');
   
-  if (!track || !waline.serverURL) return;
+  if (!wall || !waline.serverURL) return;
+  
+  let comments = [];
+  let activeComments = new Set(); // 当前显示的弹幕内容
   
   // 加载评论
   async function loadComments() {
     try {
       const res = await fetch(`${waline.serverURL}/comment?path=/&pageSize=50`);
       const data = await res.json();
-      console.log('API response:', data); // 调试用
+      const list = data.data || data;
       
-      // 兼容不同格式
-      const comments = data.data || data;
-      
-      if (comments && comments.length > 0) {
-        const html = comments.map(c => {
-          const text = (c.comment || c.content || '').replace(/<[^>]*>/g, '').substring(0, 50);
-          const time = c.insertedAt || c.createdAt || c.time;
-          return `
-            <div class="comment-item">
-              ${text}
-              <span class="comment-time">${formatTime(time)}</span>
-            </div>
-          `;
-        }).join('');
-        // 复制一份实现无缝滚动
-        track.innerHTML = html + html;
-      } else {
-        track.innerHTML = '<div class="comment-item">还没有留言，来说点什么吧~</div>';
+      if (list && list.length > 0) {
+        comments = list.map(c => {
+          return (c.comment || c.content || '').replace(/<[^>]*>/g, '').substring(0, 50);
+        }).filter(t => t.length > 0);
       }
+      
+      if (comments.length === 0) {
+        comments = ['还没有留言，来说点什么吧~'];
+      }
+      
+      // 开始生成弹幕
+      startDanmaku();
     } catch (e) {
-      console.error('Load comments error:', e);
-      track.innerHTML = '<div class="comment-item">还没有留言，来说点什么吧~</div>';
+      comments = ['还没有留言，来说点什么吧~'];
+      startDanmaku();
     }
   }
   
-  // 格式化时间
-  function formatTime(dateStr) {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    const now = new Date();
-    const diff = now - date;
-    if (diff < 60000) return '刚刚';
-    if (diff < 3600000) return Math.floor(diff / 60000) + '分钟前';
-    if (diff < 86400000) return Math.floor(diff / 3600000) + '小时前';
-    return Math.floor(diff / 86400000) + '天前';
+  // 生成单个弹幕
+  function createDanmaku() {
+    if (comments.length === 0) return;
+    
+    // 随机选一条不在当前显示中的
+    let text;
+    const available = comments.filter(c => !activeComments.has(c));
+    if (available.length === 0) {
+      // 所有弹幕都在显示中，等待
+      return;
+    }
+    text = available[Math.floor(Math.random() * available.length)];
+    activeComments.add(text);
+    
+    const el = document.createElement('div');
+    el.className = 'comment-item';
+    el.textContent = text;
+    
+    // 随机大小
+    const size = 0.85 + Math.random() * 0.3; // 0.85 - 1.15
+    el.style.fontSize = size + 'rem';
+    
+    // 随机垂直位置
+    const wallHeight = wall.offsetHeight;
+    const top = Math.random() * (wallHeight - 40);
+    el.style.top = top + 'px';
+    el.style.right = '-300px';
+    
+    // 随机速度 (8-15秒)
+    const duration = 8 + Math.random() * 7;
+    el.style.animationDuration = duration + 's';
+    
+    wall.appendChild(el);
+    
+    // 动画结束后移除
+    el.addEventListener('animationend', () => {
+      activeComments.delete(text);
+      el.remove();
+    });
+  }
+  
+  // 持续生成弹幕
+  function startDanmaku() {
+    // 初始生成几条
+    for (let i = 0; i < Math.min(3, comments.length); i++) {
+      setTimeout(() => createDanmaku(), i * 800);
+    }
+    
+    // 持续生成
+    setInterval(() => {
+      if (activeComments.size < Math.min(5, comments.length)) {
+        createDanmaku();
+      }
+    }, 2000);
   }
   
   // 发送评论
@@ -315,7 +378,10 @@ function initCommentWall() {
         })
       });
       input.value = '';
-      setTimeout(loadComments, 500);
+      
+      // 立即显示新弹幕
+      comments.push(content);
+      createDanmaku();
     } catch (e) {
       alert('发送失败，请重试');
     }

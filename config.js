@@ -19,17 +19,19 @@ const CONFIG = {
 
   // 团队信息
   team: {
-    name: "WorldLine",
+    name: "Fourward",
     members: [
       {
         name: "蔚莱",
+        avatar: "assets/images/avatar-weilai.png",  // 头像图片路径，留空则用名字首字
         role: "程序",
         email: "peterclaus622@gmail.com"
       },
       {
         name: "ddddddbee",
+        avatar: "assets/images/avatar-bee.png",
         role: "美术",
-        email: ""  // 留空则不显示邮箱图标
+        email: ""
       }
     ]
   },
