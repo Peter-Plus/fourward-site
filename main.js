@@ -112,6 +112,19 @@ function initGallery() {
     `).join('');
     
     galleryTrack.innerHTML = items;
+    
+    // 左右按钮控制
+    const prevBtn = document.querySelector('.gallery-prev');
+    const nextBtn = document.querySelector('.gallery-next');
+    const itemWidth = 320 + 12; // 图片宽度 + gap
+    
+    prevBtn?.addEventListener('click', () => {
+      galleryTrack.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+    });
+    
+    nextBtn?.addEventListener('click', () => {
+      galleryTrack.scrollBy({ left: itemWidth, behavior: 'smooth' });
+    });
   }
 }
 

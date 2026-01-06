@@ -447,10 +447,44 @@ body {
   gap: var(--space-sm);
   animation: scroll 30s linear infinite;
   width: max-content;
+  padding: 0 40px;
 }
 
 .gallery-carousel:hover .gallery-track {
   animation-play-state: paused;
+}
+
+.gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  background: rgba(45, 61, 61, 0.9);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  color: var(--color-text);
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-btn:hover {
+  background: var(--color-accent);
+  color: var(--color-bg-dark);
+  border-color: var(--color-accent);
+}
+
+.gallery-prev {
+  left: 10px;
+}
+
+.gallery-next {
+  right: 10px;
 }
 
 .gallery-item {
@@ -500,10 +534,21 @@ body {
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
+.video-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  box-shadow: inset 0 0 80px 20px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+}
+
 .video-wrapper video {
   width: 100%;
   display: block;
   background: var(--color-bg-dark);
+  position: relative;
+  z-index: 0;
 }
 
 /* Download Section */
