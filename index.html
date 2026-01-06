@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fourward - 向前</title>
+  <meta name="description" content="三年前，四名登山者挑战凯隆达尔山，只有乔一人生还。三年后，他重返此地，要完成当年的约定。">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Waline CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- 背景装饰 -->
+  <div class="bg-noise"></div>
+  <div class="bg-gradient"></div>
+  
+  <!-- 导航 -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">FOURWARD</a>
+      <div class="nav-links">
+        <a href="#about">故事</a>
+        <a href="#gallery">画廊</a>
+        <a href="#video">实录</a>
+        <a href="#download">下载</a>
+        <a href="#comments">留言</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="title-main">FOURWARD</span>
+        <span class="title-sub">Four + Forward</span>
+      </h1>
+      <p class="hero-desc" id="heroDesc"></p>
+      <div class="hero-buttons">
+        <a href="#download" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span id="downloadBtnText">下载游戏</span>
+        </a>
+        <a href="#" id="itchLink" class="btn btn-secondary" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3.13 1.338C2.08 1.96 1.02 3.94 1.02 4.92v.96c0 1.42.7 2.68 1.82 3.24-.02.12-.04.24-.04.36 0 .92.36 1.76.94 2.38-.22.4-.34.86-.34 1.34 0 1.12.64 2.08 1.56 2.56-.08.28-.12.58-.12.88 0 1.86 1.5 3.36 3.36 3.36.64 0 1.24-.18 1.74-.5.5.32 1.1.5 1.74.5.64 0 1.24-.18 1.74-.5.5.32 1.1.5 1.74.5.64 0 1.24-.18 1.74-.5.5.32 1.1.5 1.74.5 1.86 0 3.36-1.5 3.36-3.36 0-.3-.04-.6-.12-.88.92-.48 1.56-1.44 1.56-2.56 0-.48-.12-.94-.34-1.34.58-.62.94-1.46.94-2.38 0-.12-.02-.24-.04-.36 1.12-.56 1.82-1.82 1.82-3.24v-.96c0-.98-1.06-2.96-2.11-3.58C19.7.716 16.92.016 12 .016c-4.92 0-7.7.7-8.87 1.32z"/>
+          </svg>
+          itch.io
+        </a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>向下滚动</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section about">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">故事</h2>
+        <div class="section-line"></div>
+      </div>
+      
+      <div class="about-grid">
+        <div class="about-story">
+          <blockquote class="story-quote">
+            "这是一个关于'手'的故事。<br>
+            我伸出手，什么也没抓住。<br>
+            我握紧手，还是松开了。"
+          </blockquote>
+          <p class="story-text" id="storyText"></p>
+        </div>
+        
+        <div class="about-info">
+          <div class="info-card">
+            <div class="info-label">游戏类型</div>
+            <div class="info-value" id="infoGenre"></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">开发周期</div>
+            <div class="info-value" id="infoPeriod"></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">游戏引擎</div>
+            <div class="info-value" id="infoEngine"></div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">参赛活动</div>
+            <div class="info-value" id="infoJam"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features -->
+      <div class="features" id="featuresContainer"></div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <h3 class="controls-title">操作说明</h3>
+        <div class="controls-grid" id="controlsGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="section gallery">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">画廊</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="gallery-carousel">
+        <div class="gallery-track" id="galleryTrack"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Section -->
+  <section id="video" class="section video-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">实录</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="video-wrapper">
+        <video id="gameVideo" controls poster="assets/images/screenshot1.png">
+          <source src="" type="video/mp4" id="videoSource">
+          您的浏览器不支持视频播放
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Section -->
+  <section id="download" class="section download-section">
+    <div class="container">
+      <div class="download-card">
+        <div class="download-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </div>
+        <h2 class="download-title">下载游戏</h2>
+        <p class="download-info">
+          <span id="downloadPlatform">Windows PC</span>
+          <span class="download-sep">·</span>
+          <span id="downloadSize">约 100MB</span>
+        </p>
+        <a href="#" id="downloadLink" class="btn btn-download">
+          <span id="downloadText">下载游戏</span>
+        </a>
+        <div class="download-links">
+          <a href="#" id="itchLink2" class="link-item" target="_blank">
+            <span>或前往 itch.io 页面</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+          </a>
+          <a href="#" id="bilibiliLink" class="link-item" target="_blank" style="display: none;">
+            <span>B站视频</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section id="team" class="section team-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">开发团队</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="team-name" id="teamName"></div>
+      <div class="team-grid" id="teamGrid"></div>
+    </div>
+  </section>
+
+  <!-- Comments Section -->
+  <section id="comments" class="section comments-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">留言板</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="comments-wrapper">
+        <div id="waline"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-quote">Fourward was here. 🏔️</div>
+      <div class="footer-copy">© 2026 <span id="footerTeam"></span></div>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close">&times;</button>
+    <img src="" alt="" id="lightboxImg">
+    <button class="lightbox-prev">‹</button>
+    <button class="lightbox-next">›</button>
+  </div>
+
+  <!-- Scripts -->
+  <script src="config.js"></script>
+  <script src="https://unpkg.com/@waline/client@v3/dist/waline.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
