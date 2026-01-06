@@ -28,10 +28,10 @@ const CONFIG = {
         email: "peterclaus622@gmail.com"
       },
       {
-        name: "ddddddbee",
+        name: "嘚嘚",
         avatar: "assets/images/avatar-bee.png",
         role: "美术",
-        email: ""
+        email: "2464583894@qq.com"
       }
     ]
   },
