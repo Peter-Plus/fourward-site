@@ -8,7 +8,7 @@ const CONFIG = {
   game: {
     name: "Fourward",
     tagline: "Four + Forward",
-    description: "三年前，四名登山者挑战凯隆达尔山，只有乔一人生还。三年后，他重返此地，要完成当年的约定——将队旗插上山顶。",
+    description: "三年前，四名登山者挑战凯隆达尔山，只有乔一人生还。\n三年后，他重返此地，要完成当年的约定——将队旗插上山顶。",
     genre: "2D 横版解谜平台跳跃",
     platform: "Windows PC",
     engine: "Unity 2022 LTS",
@@ -85,15 +85,15 @@ const CONFIG = {
   features: [
     {
       title: "双人格系统",
-      desc: "控制主人格，影子镜像跟随——两个自我，一场博弈"
+      desc: "控制主人格，影子镜像跟随\\n两个自我，一场博弈"
     },
     {
       title: "主题契合",
-      desc: "左手是乔，右手是他的影子——怀疑、悔恨与恐惧的具象"
+      desc: "左手是乔，右手是他的影子\\n怀疑、悔恨与恐惧的具象"
     },
     {
       title: "攀登之旅",
-      desc: "从2100m到6100m，五个关卡，一段与自己和解的旅程"
+      desc: "从2100m到6100m，从山脚到顶峰\\n一段与自己和解的旅程"
     }
   ],
 
@@ -104,6 +104,6 @@ const CONFIG = {
     { key: "W/S", action: "攀爬" },
     { key: "Q", action: "召唤/隐藏反人格" },
     { key: "R", action: "回拉至反人格位置" },
-    { key: "E", action: "交互" }
+    { key: "E", action: "道具" }
   ]
 };

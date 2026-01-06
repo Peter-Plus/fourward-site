@@ -15,7 +15,8 @@ function initContent() {
   const { game, team, links, media, download, features, controls } = CONFIG;
   
   // Hero
-  setText('heroDesc', game.description);
+  const heroDescEl = document.getElementById('heroDesc');
+  if (heroDescEl) heroDescEl.innerHTML = game.description.replace(/\n/g, '<br>');
   setText('downloadBtnText', download.buttonText);
   
   // Links
@@ -31,7 +32,8 @@ function initContent() {
   }
   
   // About
-  setText('storyText', game.description);
+  const storyTextEl = document.getElementById('storyText');
+  if (storyTextEl) storyTextEl.innerHTML = game.description.replace(/\n/g, '<br>');
   setText('infoGenre', game.genre);
   setText('infoPeriod', game.devPeriod);
   setText('infoEngine', game.engine);
@@ -43,7 +45,7 @@ function initContent() {
     featuresContainer.innerHTML = features.map(f => `
       <div class="feature-card">
         <div class="feature-title">${f.title}</div>
-        <div class="feature-desc">${f.desc}</div>
+        <div class="feature-desc">${f.desc.replace(/\\n/g, '<br>')}</div>
       </div>
     `).join('');
   }

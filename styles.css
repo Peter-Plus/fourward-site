@@ -269,6 +269,18 @@ body {
   box-shadow: 0 10px 40px rgba(232, 168, 76, 0.4);
 }
 
+.download-buttons {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.download-buttons .btn-download {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+}
+
 /* Section Common */
 .section {
   position: relative;
@@ -522,7 +534,7 @@ body {
 }
 
 .download-card {
-  max-width: 400px;
+  max-width: 450px;
   margin: 0 auto;
   text-align: center;
   padding: var(--space-lg) var(--space-md);
@@ -968,22 +980,6 @@ body {
 /* 下载图标浮动 */
 .download-icon {
   animation: float 3s ease-in-out infinite;
-}
-
-/* 引用块装饰 */
-.story-quote {
-  position: relative;
-}
-
-.story-quote::before {
-  content: '"';
-  position: absolute;
-  top: -20px;
-  left: -10px;
-  font-size: 4rem;
-  color: var(--color-accent);
-  opacity: 0.2;
-  font-family: Georgia, serif;
 }
 
 /* 团队卡片悬浮 */
