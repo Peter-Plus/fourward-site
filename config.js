@@ -103,7 +103,7 @@ const CONFIG = {
     { key: "空格", action: "跳跃" },
     { key: "W/S", action: "攀爬" },
     { key: "Q", action: "召唤/隐藏反人格" },
-    { key: "R", action: "回拉至反人格位置" },
-    { key: "E", action: "交互" }
+    { key: "E", action: "回拉至反人格位置" },
+    { key: "T", action: "使用道具" }
   ]
 };
